@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>雲端行動短網址</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.css">
+    <script src="javascripts/sweetalert2.js"></script>
+    <link rel="stylesheet" href="stylesheets/sweetalert2.css">
+    <script src="javascripts/js.cookie.js"></script>
+    <script src="javascripts/API.js"></script>
+    <script src="javascripts/index.js"></script>
+</head>
+<body>
+<script>
+    $(document).ready(function () {
+        layoutPage();
+        getList();
+       $("#addUser").click(function () {
+           const {value: formValues} =  swal({
+               title: '新增使用者',
+               html:
+               '<form id="add"><input name="account" placeholder="請輸入帳號" class="swal2-input" onfocus="">' +
+               '<input name="user_name" placeholder="請輸入使用者名稱" class="swal2-input">'+
+               '<input name="email" placeholder="請輸入信箱" class="swal2-input"></form>',
+               focusConfirm: false,
+               showCancelButton: true,
+               confirmButtonText: '確認新增',
+               cancelButtonText:'取消',
+               confirmButtonColor: '#23BADB',
+               showLoaderOnConfirm:true,
+               preConfirm: (add) => {
+                   var p = $('#add').serializeArray();
+                   return window.api.sendApi("user/createUser", "POST", p, function (data) {
+                       if (data.error == null) {
+                           swal({
+                               type: "success",
+                               text: "新增成功!",
+                           });
+                           setTimeout(()=>{
+                               getList();
+                           },500)
+                       } else {
+                           swal({
+                               type: 'error',
+                               text: data.error.message,
+                           });
+                       }
+                   }, function (data) {
+                       swal({
+                           type: 'error',
+                           text: '連線錯誤，請稍候重試!'
+                       });
+                   })
+               },
+           })
+
+       })
+    });
+    function getList() {
+        window.api.sendApi("user/getUserList", "GET", "", function (data) {
+            if (data.error == null) {
+                let content = "";
+                data.data.forEach((el) => {
+                    content += " <tr>\n" +
+                        "                <td>" + el.id + "</td>\n" +
+                        "                <td>" + el.account + "</td>\n" +
+                        "                <td>" + el.user_name + "</td>\n" +
+                        "                <td>" + el.email + "</td>\n" +
+                        "                <td>" + (el.is_admin===1?'是':'否') + "</td>\n" +
+                       /* "                <td>\n" +
+                        "                    <button class=\"btn btn-orange btn-sm\" onclick='document.location.href =\"urlDetail.html?id="+el.id+"\"'>刪除</button>\n" +
+                        "                </td>\n" +*/
+                        "       </tr>"
+                });
+                $("#userList > tbody").html(content);
+            } else {
+                swal({
+                    type: 'error',
+                    text: data.error.message,
+                });
+            }
+        }, function (data) {
+            swal({
+                type: 'error',
+                text: '連線錯誤，請稍候重試!'
+            });
+        })
+
+    }
+</script>
+<header></header>
+<main class="container">
+    <button class="btn btn-skyBlue m-3" id="addUser">建立使用者</button>
+    <div class="text-center">
+        <table class="table table-striped table-bordered" id="userList" style="background: #FFF" width="100%">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">名稱</th>
+                <th scope="col">帳號</th>
+                <th scope="col">信箱</th>
+                <th scope="col">管理者</th>
+               <!-- <th scope="col">刪除</th>-->
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>
+<style>
+    html {
+        position: relative;
+        min-height: 100%;
+    }
+
+    .bg-skyBlue {
+        background: #23BADB;
+    }
+
+    body > .container {
+        padding: 60px 15px 0;
+    }
+</style>
+

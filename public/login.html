@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>雲端行動短網址</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.css">
+    <script src="javascripts/sweetalert2.js"></script>
+    <link rel="stylesheet" href="stylesheets/sweetalert2.css">
+    <script src="javascripts/js.cookie.js"></script>
+    <script src="javascripts/API.js"></script>
+    <script src="javascripts/index.js"></script>
+</head>
+<script>
+    $(document).ready(function() {
+        $("input[name='account']").keydown(function (event) {
+            if (event.keyCode == 13) {
+                $("input[name='password']").focus();
+            }
+        });
+        $("input[name='password']").keydown(function (event) {
+            if (event.which == 13) {
+                login('login');
+            }
+        });
+    });
+    function login(form) {
+        var p = $('#' + form).serializeArray();
+        window.api.sendApi("user/login","POST",p,function (data) {
+            if(data.error==null){
+                Cookies.set("session",data.session);
+                swal({
+                    type: 'success',
+                    text:'登入成功!',
+                    showConfirmButton: false,
+                });
+                setTimeout(()=>{
+                    document.location.href = 'index.html'
+                },1000)
+            }else {
+                swal({
+                    type: 'error',
+                    text:data.error.message,
+                });
+            }
+        },function (data) {
+            swal({
+                type: 'error',
+                text:'連線錯誤，請稍候重試!'
+            });
+        })
+    }
+
+</script>
+<body class="text-center login-layout">
+<form class="form-signin" id="login">
+    <img class="mb-4" src="images/ecloud.png" alt="" width="72" height="auto" style="border-radius: 10px">
+    <h1 class="h4 mb-3 font-weight-normal">雲端行動短網址系統登入</h1>
+    <label for="inputAccount" class="sr-only">帳號</label>
+    <input type="text" id="inputAccount" class="form-control" name="account" placeholder="請輸入帳號" required autofocus>
+    <label for="inputPassword" class="sr-only">密碼</label>
+    <input type="password" id="inputPassword" class="form-control" name="password" placeholder="請輸入密碼" required>
+    <p></p>
+    <!-- <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>-->
+    <button class="btn btn-lg btn-skyBlue btn-block" type="button" onclick="login('login')">登入</button>
+</form>
+</body>
+</html>

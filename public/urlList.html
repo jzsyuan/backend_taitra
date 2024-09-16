@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>雲端行動短網址</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.css">
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <script src="javascripts/sweetalert2.js"></script>
+    <link rel="stylesheet" href="stylesheets/sweetalert2.css">
+    <script src="javascripts/js.cookie.js"></script>
+    <script src="javascripts/API.js"></script>
+    <script src="javascripts/index.js"></script>
+</head>
+<body>
+<script>
+    $(document).ready(function () {
+        layoutPage();
+        getList();
+    });
+
+    function getList(form) {
+        var p = $('#' + form).serializeArray();
+        window.api.sendApi("app/getShortUrlList", "POST", p, function (data) {
+            if (data.error == null) {
+                let content = "";
+                data.data.forEach((el) => {
+                    content += " <tr>\n" +
+                        "                <td>" + el.id + "</td>\n" +
+                        "                <td>" + el.url_name + "</td>\n" +
+                        "                <td><a href='" + el.shorten_url + "' target='_blank'>" + el.shorten_url + "</a></td>\n" +
+                        "                <td>" + el.click_count + "</td>\n" +
+                        "                <td>" + el.android_click_count + "</td>\n" +
+                        "                <td>" + el.ios_click_count + "</td>\n" +
+                        "                <td>" + el.create_time + "</td>\n" +
+                        "                <td>\n" +
+                        "                    <button class=\"btn btn-skyBlue btn-sm\" onclick='document.location.href =\"urlDetail.html?id="+el.id+"\"'>檢視</button>\n" +
+                        "                </td>\n" +
+                        "       </tr>"
+                })
+                $("#urlList >tbody").html(content);
+                $('#urlList').DataTable({
+                    language: {
+                        url: "./javascripts/dataTable-chinese.json"
+                    }
+                });
+            } else {
+                swal({
+                    type: 'error',
+                    text: data.error.message,
+                });
+            }
+        }, function (data) {
+            swal({
+                type: 'error',
+                text: '連線錯誤，請稍候重試!'
+            });
+        })
+    }
+
+</script>
+<header></header>
+<main class="container">
+    <div class="">
+        <table id="urlList" class="display" style="width:100%">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>名稱</th>
+                <th>短網址</th>
+                <th>點擊數</th>
+                <th>Android點擊數</th>
+                <th>Ios點擊數</th>
+                <th>建立時間</th>
+                <th>動作</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          <!--  <tfoot>
+            <tr>
+                <th>#</th>
+                <th>名稱</th>
+                <th>訪客數</th>
+                <th>短網址</th>
+                <th>動作</th>
+            </tr>
+            </tfoot>-->
+        </table>
+    </div>
+
+</main>
+
+</body>
+</html>
+<style>
+    html {
+        position: relative;
+        min-height: 100%;
+    }
+
+    .bg-skyBlue {
+        background: #23BADB;
+    }
+
+    body > .container {
+        padding: 60px 15px 0;
+    }
+
+    .page-link {
+        background-color: #FFF !important;
+        border-radius: 5px !important;
+    }
+
+    .page-item.active .page-link {
+        font-weight: bold;
+        background-color: #23BADB !important;
+        color: #FFF !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background-color: #efefef !important;
+        background: none;
+        border: none!important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        background-color: #efefef !important;
+        background: none;
+        padding: 0.2em !important;
+    }
+</style>
+

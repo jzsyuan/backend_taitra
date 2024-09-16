@@ -1,0 +1,78 @@
+html{
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微軟雅黑",Arial,sans-serif!important;
+}
+html, body {
+    height: 100%;
+    background-color: #efefef !important;
+}
+
+.login-layout {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.form-signin {
+    width: 100%;
+    max-width: 500px;
+    padding: 15px;
+    margin: auto;
+}
+.form-signin .checkbox {
+    font-weight: 400;
+}
+.form-signin .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+.form-signin input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.btn-skyBlue{
+    background: #23BADB;
+    color: #FFF;
+}
+
+.btn-orange{
+    background: #ffc01b;
+    color: #FFF;
+}
+
+
+.btn-skyBlue:hover,.btn-skyBlue:active{
+    background: #24cbed;
+}
+
+.btn-orange:hover,.btn-orange:active{
+    background: #ffd333;
+}
+.navbar-dark .navbar-nav .active>.nav-link{
+    font-weight: bold!important;
+}
+
+.urlList{
+    background-color: #FFFFFF;
+}
+
+
+.page-link{
+   /* background-color: #efefef!important;
+    border:none!important;*/
+    color: #0082a9!important;
+}

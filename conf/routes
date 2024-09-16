@@ -1,0 +1,104 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+
+# ignore favicon
+GET         /r/*file                                            controllers.Assets.versioned(path="/public", file)
+
+#OPTIONS    /                                                   controllers.OptionsController.options(path: String ?= "")
+#OPTIONS    /*path                                              controllers.OptionsController.options(path)
+
+GET         /api/v1/heartbeat                                   controllers.AppController.heartbeat(request: Request)
+POST        /api/v1/verifyTest                                  controllers.AppController.verify(request: Request)
+
+#1.1 AI情報站-儀表板資料
+POST        /api/v1/AIInfo/dashboard                            controllers.AIInfoController.getDashboard(request: Request)
+#1.2 AI情報站-產業新聞列表
+POST        /api/v1/AIInfo/news                                 controllers.AIInfoController.getNews(request: Request)
+
+#2.1.1 數據洞察-追蹤目標市場-取得列表
+POST         /api/v1/insight/tracking/list/get                  controllers.InsightTrackingController.getMemberList(request: Request)
+#2.1.2 數據洞察-追蹤目標市場-更新列表
+POST         /api/v1/insight/tracking/list/update               controllers.InsightTrackingController.updateMemberList(request: Request)
+#2.1.3 數據洞察-追蹤目標市場-移除推薦列表
+POST         /api/v1/insight/tracking/list/removeRecommend      controllers.InsightTrackingController.removeRecommend(request: Request)
+#2.1.4 數據洞察-追蹤目標市場-全部
+POST         /api/v1/insight/tracking/data/A0                   controllers.InsightTrackingController.getDefault(request: Request)
+#2.1.5 數據洞察-追蹤目標市場-區塊1
+POST         /api/v1/insight/tracking/data/A1                   controllers.InsightTrackingController.getA1(request: Request)
+#2.1.6 數據洞察-追蹤目標市場-區塊2
+POST         /api/v1/insight/tracking/data/A2                   controllers.InsightTrackingController.getA2(request: Request)
+#2.1.7 數據洞察-追蹤目標市場-區塊3
+POST         /api/v1/insight/tracking/data/A3                   controllers.InsightTrackingController.getA3(request: Request)
+
+#2.2.1 數據洞察-深耕目標市場-取得列表
+POST         /api/v1/insight/cultivate/list/get                 controllers.InsightCultivateController.getMemberList(request: Request)
+#2.2.2 數據洞察-深耕目標市場-更新列表
+POST         /api/v1/insight/cultivate/list/update              controllers.InsightCultivateController.updateMemberList(request: Request)
+#2.2.3 數據洞察-深耕目標市場-移除推薦列表
+POST         /api/v1/insight/cultivate/list/removeRecommend     controllers.InsightCultivateController.removeRecommend(request: Request)
+#2.2.4 數據洞察-深耕目標市場-全部
+POST         /api/v1/insight/cultivate/data/B0                  controllers.InsightCultivateController.getDefault(request: Request)
+#2.2.5 數據洞察-深耕目標市場-區塊1
+POST         /api/v1/insight/cultivate/data/B1                  controllers.InsightCultivateController.getB1(request: Request)
+#2.2.6 數據洞察-深耕目標市場-區塊2
+POST         /api/v1/insight/cultivate/data/B2                  controllers.InsightCultivateController.getB2(request: Request)
+#2.2.7 數據洞察-深耕目標市場-區塊3
+POST         /api/v1/insight/cultivate/data/B3                  controllers.InsightCultivateController.getB3(request: Request)
+
+#2.3.1 數據洞察-尋找潛力市場-取得列表
+POST         /api/v1/insight/potential/list/get                 controllers.InsightPotentialController.getMemberList(request: Request)
+#2.3.2 數據洞察-尋找潛力市場-更新列表
+POST         /api/v1/insight/potential/list/update              controllers.InsightPotentialController.updateMemberList(request: Request)
+#2.3.3 數據洞察-深耕目標市場-移除推薦列表
+POST         /api/v1/insight/potential/list/removeRecommend     controllers.InsightPotentialController.removeRecommend(request: Request)
+#2.3.4 數據洞察-尋找潛力市場-全部
+POST         /api/v1/insight/potential/data/C0                  controllers.InsightPotentialController.getDefault(request: Request)
+#2.3.5 數據洞察-尋找潛力市場-區塊1
+POST         /api/v1/insight/potential/data/C1                  controllers.InsightPotentialController.getC1(request: Request)
+#2.3.6 數據洞察-尋找潛力市場-區塊2
+POST         /api/v1/insight/potential/data/C2                  controllers.InsightPotentialController.getC2(request: Request)
+#2.3.7 數據洞察-尋找潛力市場-區塊3.1
+POST         /api/v1/insight/potential/data/C3P1                controllers.InsightPotentialController.getC3P1(request: Request)
+#2.3.8 數據洞察-尋找潛力市場-區塊3.2
+POST         /api/v1/insight/potential/data/C3P2                controllers.InsightPotentialController.getC3P2(request: Request)
+
+
+#3.1 展會資訊-展會熱門列表(含推薦)
+POST        /api/v1/exhibition/recommend                        controllers.ExhibitionController.getRecommendedExhibitions(request: Request)
+#3.2 展會資訊-更新展會收藏列表
+POST        /api/v1/exhibition/favorite/update                  controllers.ExhibitionController.updateFavoriteExhibitions(request: Request)
+#3.3 展會資訊-展會明細
+POST        /api/v1/exhibition/detail                           controllers.ExhibitionController.getExhibitionDetail(request: Request)
+#3.4 展會資訊-選單資料
+GET         /api/v1/exhibition/menu                             controllers.ExhibitionController.getMenu(request: Request)
+#3.5 展會資訊-移除推薦
+POST        /api/v1/exhibition/removeRecommend                  controllers.ExhibitionController.removeRecommend(request: Request)
+
+#4.1 活動情報-活動熱門列表(+推薦)
+POST        /api/v1/activity/recommend                          controllers.ActivityController.getRecommendedActivities(request: Request)
+#4.2 展會資訊-更新展會收藏列表
+POST        /api/v1/activity/favorite/update                    controllers.ActivityController.updateFavoriteActivities(request: Request)
+#4.3 活動情報-活動明細
+POST        /api/v1/activity/detail                             controllers.ActivityController.getActivityDetail(request: Request)
+#4.4 活動情報-選單資料
+GET         /api/v1/activity/menu                               controllers.ActivityController.getMenu(request: Request)
+#4.5 活動情報-移除推薦
+POST        /api/v1/activity/removeRecommend                    controllers.ActivityController.removeRecommend(request: Request)
+
+#5  企業用戶特徵
+#POST        /api/v1/EDM/getTrait                                controllers.EDMController.getTrait(request: Request)
+
+#6.1  統編查詢
+POST        /api/v1/company/get                                 controllers.EDMController.getCompany(request: Request)
+#6.2
+POST        /api/v1/company/getInterest                         controllers.EDMController.getInterest(request: Request)
+#6.3  Log
+POST        /api/v1/util/log                                    controllers.AppController.updateLog(request: Request)
+#6.4  更新需遮蔽的展會、活動編號
+POST        /api/v1/util/blockId                                controllers.AppController.blockId(request: Request)
+
+#Clean cahce
+GET         /api/v1/util/cleanCache                             controllers.AppController.cleanCache(request: Request)
