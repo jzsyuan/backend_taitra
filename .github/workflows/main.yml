@@ -1,0 +1,36 @@
+name: CI/CD on Self-Hosted Runner
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      run: |
+        sudo systemctl start docker
+        docker --version
+
+    - name: Build Docker Image
+      run: |
+        docker build -t backend_taitra:latest .
+
+    - name: Run Docker Container
+      run: |
+          docker run --rm -it \
+          -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
+          -e DB_URL=${{ secrets.DB_URL_TEST }} \
+          -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
+          -e DB_PASSWORD=${{ secrets.DB_PASSWORD_TEST }} \
+          -p 9091:9090 \
+          backend_taitra:latest
+
+    - name: Notify Success
+      run: echo "Build and deployment completed successfully!"
