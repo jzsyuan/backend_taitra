@@ -54,7 +54,7 @@ RUN chmod +x /home/ubuntu/start.sh /home/ubuntu/config.sh
 
 # 解壓打包的應用
 RUN unzip /home/ubuntu/taitra-1.0.zip
-RUN /home/ubuntu/config.sh ./taitra-1.0/conf/application.conf
+# RUN /home/ubuntu/config.sh ./taitra-1.0/conf/application.conf
 # # 設置容器的啟動指令
 ENTRYPOINT ["/home/ubuntu/start.sh"]
 
