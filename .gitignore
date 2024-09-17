@@ -205,3 +205,5 @@ puppeteer/src/test.png
 
 # config 
 conf/*.conf
+#
+makefile
