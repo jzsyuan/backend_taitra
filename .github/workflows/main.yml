@@ -46,4 +46,23 @@ jobs:
         docker stop taitra_container
 
     - name: Notify Success
-      run: echo "Build, deployment, and testing completed successfully!"d
+      run: echo "Build, deployment, and testing completed successfully!"
+
+  ecr:
+    runs-on: self-hosted
+    needs: test
+
+    steps:
+    - name: Log in to Amazon ECR
+      run: |
+        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+    - name: Tag Docker image
+      run: |
+        docker tag backend_taitra:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/backend_taitra:latest
+
+    - name: Push to Amazon ECR
+      run: |
+        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/backend_taitra:latest
+    - name: Notify Success
+      run: echo "Docker image successfully pushed to ECR!"
