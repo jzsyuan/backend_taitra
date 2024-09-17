@@ -1,13 +1,11 @@
 #!/bin/bash
 
 PLAY_DIR=taitra-1.0
-CONFIG_FILE=$PLAY_DIR/conf/application.conf
-
 
 
 if [ -n "$SECRET_KEY" ] && [ -n "$DB_URL" ] && [ -n "$DB_USERNAME" ] && [ -n "$DB_PASSWORD" ]; then
   echo "所有環境變數已設置，生成配置文件..."
-  ./config.sh $CONFIG_FILE
+  ./config.sh /home/ubuntu/taitra-1.0/conf/application.conf
 else
   echo "環境變數未完全設置，跳過生成配置文件步驟。"
 fi
@@ -27,6 +25,6 @@ exec $PLAY_DIR/bin/taitra \
   -Dfile.encoding=UTF-8 \
   -Duser.timezone=Asia/Taipei \
   -Dhttp.port=9090 \
-  -Dconfig.file=$CONFIG_FILE \
-  -Dlogger.file=$PLAY_DIR/conf/logback.xml \
+  -Dconfig.file=/home/ubuntu/taitra-1.0/conf/application.conf \
+  -Dlogger.file=/home/ubuntu/taitra-1.0/conf/logback.xml
   >> /dev/null 2>&1 &
