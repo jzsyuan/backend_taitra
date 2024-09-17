@@ -25,7 +25,9 @@ jobs:
     - name: Run Docker Container
       run: |
         docker run --rm -d -e SECRET_KEY="${{ secrets.SECRET_KEY}}" -e DB_URL="${{secrets.DB_URL_TEST}}" -e DB_USERNAME="${{ secrets.DB_USERNAME}}" -e DB_PASSWORD="${{ secrets.DB_PASSWORD_TEST}}" -p 9091:9090 --name taitra_container backend_taitra:latest
-
+    
+    - name: Wait for Service to Start
+      run: sleep 10
 
     - name: Test API Heartbeat
       run: |
