@@ -29,8 +29,9 @@ jobs:
 
     - name: Test API Heartbeat
       run: |
-        curl --request GET --url http://localhost:9091/api/v1/heartbeat --header 'User-Agent: insomnia/8.4.5'
-
+        curl --request GET \
+        --url http://localhost:9090/api/v1/heartbeat \
+        --header 'User-Agent: insomnia/8.4.5'
     - name: Stop Docker Container
       run: |
         docker stop taitra_container
