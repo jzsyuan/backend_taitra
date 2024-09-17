@@ -24,13 +24,24 @@ jobs:
 
     - name: Run Docker Container
       run: |
-          docker run --rm -it \
+          docker run --rm -d \
           -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
           -e DB_URL=${{ secrets.DB_URL_TEST }} \
           -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
           -e DB_PASSWORD=${{ secrets.DB_PASSWORD_TEST }} \
           -p 9091:9090 \
+          --name taitra_container \
           backend_taitra:latest
 
+    - name: Test API Heartbeat
+      run: |
+        curl --request GET \
+        --url http://localhost:9091/api/v1/heartbeat \
+        --header 'User-Agent: insomnia/8.4.5'
+
+    - name: Stop Docker Container
+      run: |
+        docker stop taitra_container
+
     - name: Notify Success
-      run: echo "Build and deployment completed successfully!"
+      run: echo "Build, deployment, and testing completed successfully!"
