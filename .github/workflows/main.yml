@@ -63,7 +63,12 @@ jobs:
     - name: Log in to Amazon ECR
       run: |
         aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-
+    
+    - name: Create ECR Repository
+      run: |
+        aws ecr describe-repositories --repository-names bdx/bdx-ubuntu-backend_taitra --region ${{ secrets.AWS_REGION }} || \
+        aws ecr create-repository --repository-name bdx/bdx-ubuntu-backend_taitra --region ${{ secrets.AWS_REGION }}
+    
     - name: Tag Docker image
       run: |
         docker tag backend_taitra:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/bdx/bdx-ubuntu-backend_taitra:latest
