@@ -48,11 +48,18 @@ jobs:
     - name: Notify Success
       run: echo "Build, deployment, and testing completed successfully!"
 
-  ecr:
+  ECR:
     runs-on: self-hosted
     needs: test
 
     steps:
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+        
     - name: Log in to Amazon ECR
       run: |
         aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
