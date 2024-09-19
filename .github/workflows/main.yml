@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'app/**'  # 只在 'backend/' 目錄下的檔案有變更時觸發
 
 jobs:
   build:
